@@ -1,0 +1,48 @@
+#include <iostream>
+#include<cmath>
+using namespace std;
+int main()
+{
+float heat_yield, vol_a, vol_b, press_a, press_b, press_c, press_d;
+float gamma, temp_a, temp_b, temp_c, temp_d, vol_c, vol_d, heat_input;
+float litr_cycle, moles, capacity, burn_eff, work_ab, work_cd, eff_work;
+float total_work, heat_output, eff_heat, heat_input_minus_output;
+heat_yield = 2.88e+7;
+litr_cycle = 0.00002;
+burn_eff = 0.4;
+capacity = 20.785;
+moles = 0.025;
+gamma = 1.4;
+vol_a = 0.5;
+vol_b = 0.05;
+vol_c = vol_b;
+vol_d = vol_a;
+press_a = 1.0;
+temp_a = 300;
+press_b = press_a*pow((vol_a/vol_b),gamma);
+temp_b = temp_a*pow((vol_a/vol_b),(gamma-1));
+heat_input = litr_cycle*heat_yield*burn_eff;
+temp_c = temp_b + (heat_yield*litr_cycle*burn_eff/(moles*capacity));
+press_c = (press_b*temp_c)/temp_b;
+press_d = press_c*pow((vol_c/vol_d),gamma);
+temp_d = temp_c*pow((vol_c/vol_d),(gamma-1));
+work_cd = (1/(gamma-1))*(press_c*vol_c - press_d*vol_d)*1.01e5*.001;
+work_ab = (1/(gamma-1))*(press_a*vol_a - press_b*vol_b)*1.01e5*.001;
+heat_output = moles*capacity*(temp_d - temp_a);
+total_work = work_ab + work_cd;
+cout << " press_a = " << press_a << " atm " << " temp_a = " << temp_a - 273.0 << "Celsius" << endl;
+cout << " press_b = " << press_b << " atm " << " temp_b = " << temp_b -
+273.0 << "Celsius" << endl;
+cout << " press_c = " << press_c << " atm " << " temp_c = " << temp_c -
+273.0 << "Celsius" << endl;
+cout << " press_d = " << press_d << " atm " << " temp_d = " << temp_d -
+273.0 << "Celsius" << endl;
+cout << " work_cd = " << work_cd << " joules " << " work_ab = " <<
+work_ab << "joules "<< " total_work = " << total_work << " joules " << endl;
+eff_work = (work_cd + work_ab)/(heat_input);
+eff_heat = (heat_input - heat_output)/heat_input;
+cout << " heat_input = " << heat_input << " joules " << " heat_output = "<< heat_output << " joules "
+<< " heat_input_minus_output = " << heat_input - heat_output << endl;
+cout << " eff_work = " << eff_work << " eff_heat = " << eff_heat;
+return 0;
+}
